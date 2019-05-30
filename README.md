@@ -1,9 +1,9 @@
 # Laravel docs lang switch
 
-You can switch the language of the [Laravel docs](https://laravel.com/docs/master) to English and Chinese.
+安裝此外掛後，[Laravel 文檔](https://laravel.com/docs/master) 中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 
 ## Usage
 
-1. Install Tampermonkey on [Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) or [Firefox](https://addons.mozilla.org/zh-TW/firefox/addon/tampermonkey/).
-2. Open the [Laravel docs lang switch](https://raw.githubusercontent.com/ycs77/laravel-docs-lang-switch/master/Laravel%20docs%20lang%20switch.user.js) and install.
-3. Open the [Laravel docs](https://laravel.com/docs/master). Now you can fast switch the language of Laravel docs.
+1. 安裝瀏覽器套件 Tampermonkey ([在 Chrome 安裝](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo), [在 Firefox 安裝](https://addons.mozilla.org/zh-TW/firefox/addon/tampermonkey/))。
+2. 開啟 [Laravel docs lang switch](https://raw.githubusercontent.com/ycs77/laravel-docs-lang-switch/master/Laravel%20docs%20lang%20switch.user.js) 並安裝。
+3. 開啟 [Laravel 文檔](https://laravel.com/docs/master)。現在可以輕鬆切換英文和中文語言了。
