@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Laravel docs lang switch
 // @namespace    https://github.com/ycs77
-// @version      1.0
+// @version      1.1
 // @description  Switch laravel docs languages
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -18,7 +18,7 @@
 
     function LaravelLang(lang) {
         this.url = window.location.href;
-        this.master_version = '5.8';
+        this.master_version = '5.9';
         this.langs = {
             en: {
                 title: 'English',
