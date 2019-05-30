@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Laravel docs lang switch
 // @namespace    https://github.com/ycs77
-// @version      1.1
+// @version      1.2
 // @description  Switch laravel docs languages
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -61,12 +61,16 @@
         const self = this;
         let langs = [];
         for (const lang of Object.keys(this.langs)) {
-            let langData = self.langs[lang];
+            let lang_data = self.langs[lang];
+            let self_lang_data = self.langs[self.lang];
             let self_version = self.version;
-            let lang_version = langData.master_version;
-            let min_version = langData.min_version;
+            let lang_version = lang_data.master_version;
+            let min_version = lang_data.min_version;
             if (self_version === 'master') {
-                self_version = self.master_version;
+                self_version = self_lang_data.master_version;
+                if (self_version === 'master') {
+                    self_version = self.master_version;
+                }
             }
             if (lang_version === 'master') {
                 lang_version = self.master_version;
@@ -75,7 +79,7 @@
                 window.compareVersions(lang_version, self_version) >= 0 &&
                 window.compareVersions(min_version, self_version) <= 0
             ) {
-                langs.push(langData);
+                langs.push(lang_data);
             }
         }
         return langs;
@@ -89,7 +93,7 @@
         return lang.prefix + version + (this.section ? '/' + this.section : '');
     }
 
-    LaravelLang.prototype.createBs4Dropdown = function (selector, callback) {
+    LaravelLang.prototype.createBs4Dropdown = function (selector) {
         const self = this;
 
         let switcher = d.querySelector(selector);
@@ -127,8 +131,6 @@
             list.appendChild(li);
         });
         dropdown.appendChild(list);
-
-        callback.call(this);
     }
 
     LaravelLang.prototype.createLkDropdown = function (selector, isHome) {
