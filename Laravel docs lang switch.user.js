@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Laravel docs lang switch
+// @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
 // @version      1.2
-// @description  Switch laravel docs languages
+// @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
 // @match        https://laravel.tw/docs/*
