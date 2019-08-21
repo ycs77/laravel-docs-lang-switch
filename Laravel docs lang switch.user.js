@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
-// @version      1.3
+// @version      1.4
 // @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -12,13 +12,13 @@
 // ==/UserScript==
 
 ;(function () {
-    'use strict';
+  'use strict';
 
     let d = document;
 
     function LaravelLang(lang) {
         this.url = window.location.href;
-        this.master_version = '5.9';
+        this.master_version = '6.0';
         this.langs = {
             en: {
                 title: 'English',
@@ -93,18 +93,74 @@
         return lang.prefix + version + (this.section ? '/' + this.section : '');
     }
 
+    LaravelLang.prototype.createLaravelSiteDropdown = function (selector) {
+        const self = this;
+
+        const actions = d.querySelector(selector);
+
+        const dropdown = d.createElement('div');
+        dropdown.classList.add('language_drop');
+        actions.prepend(dropdown);
+
+        const input_group = d.createElement('div');
+        input_group.classList.add('input_group');
+        dropdown.appendChild(input_group);
+
+        const label = d.createElement('label');
+        label.appendChild(d.createTextNode('Language'));
+        input_group.appendChild(label);
+
+        const custom_select = d.createElement('div');
+        custom_select.classList.add('custom_select');
+        input_group.appendChild(custom_select);
+
+        const list = d.createElement('select');
+        list.id = 'language_switcher';
+        this.getLangs().forEach(function (lang) {
+            const option = d.createElement('option');
+            option.value = self.parseUrl(lang);
+            option.appendChild(d.createTextNode(lang.title));
+            if (lang.title === self.title) {
+                option.selected = true;
+            }
+            list.appendChild(option);
+        });
+        list.addEventListener('change', function () {
+            window.location = this.value;
+        });
+        custom_select.appendChild(list);
+
+        const css = d.createElement('style')
+        css.textContent = `
+.docs_actions .language_drop {
+    margin-bottom: 1em;
+}
+@media (min-width: 48.75em) {
+    .docs_actions .language_drop {
+        margin: 0;
+        margin-left: 2.25em;
+        flex: none;
+    }
+    .docs_actions .language_drop,
+    .docs_actions .version_drop {
+        width: 7em;
+    }
+}`
+        d.body.appendChild(css)
+    }
+
     LaravelLang.prototype.createBs4Dropdown = function (selector) {
         const self = this;
 
-        let switcher = d.querySelector(selector);
+        const switcher = d.querySelector(selector);
 
-        let dropdown = d.createElement('div');
+        const dropdown = d.createElement('div');
         dropdown.classList.add('dropdown', 'dropdown-lang');
         dropdown.style.marginLeft = '10px';
         switcher.appendChild(dropdown);
 
-        let btn = d.createElement('button');
-        let btn_caret = d.createElement('span');
+        const btn = d.createElement('button');
+        const btn_caret = d.createElement('span');
         btn.id = 'dropdownMenuLang';
         btn.classList.add('btn', 'dropdown-toggle');
         btn.setAttribute('type', 'button');
@@ -115,13 +171,13 @@
         btn.appendChild(btn_caret);
         dropdown.appendChild(btn);
 
-        let list = d.createElement('ul');
+        const list = d.createElement('ul');
         list.classList.add('dropdown-menu');
         list.setAttribute('role', 'menu');
         list.setAttribute('aria-labelledby', 'dropdownMenuLang');
         this.getLangs().forEach(function (lang) {
-            let li = d.createElement('li');
-            let a = d.createElement('a');
+            const li = d.createElement('li');
+            const a = d.createElement('a');
             li.appendChild(a);
             li.setAttribute('role', 'presentation');
             a.href = self.parseUrl(lang);
@@ -136,10 +192,10 @@
     LaravelLang.prototype.createLkDropdown = function (selector, isHome) {
         const self = this;
 
-        let oldDropdown = d.querySelector(selector);
+        const oldDropdown = d.querySelector(selector);
         if (!oldDropdown) return;
 
-        let dropdown = d.createElement('div');
+        const dropdown = d.createElement('div');
         if (isHome) {
             dropdown.classList.add('ui', 'dropdown', 'simple', 'green', 'basic', 'label');
         } else {
@@ -148,18 +204,18 @@
         dropdown.style.marginLeft = '10px';
         oldDropdown.parentNode.appendChild(dropdown);
 
-        let text = d.createElement('div');
-        let icon = d.createElement('i');
+        const text = d.createElement('div');
+        const icon = d.createElement('i');
         text.classList.add('text');
         text.appendChild(d.createTextNode(this.title));
         icon.classList.add('dropdown', 'icon');
         dropdown.appendChild(text);
         dropdown.appendChild(icon);
 
-        let list = d.createElement('div');
+        const list = d.createElement('div');
         list.classList.add('menu');
         this.getLangs().forEach(function (lang) {
-            let a = d.createElement('a');
+            const a = d.createElement('a');
             a.href = self.parseUrl(lang);
             a.classList.add('item');
             a.appendChild(d.createTextNode(lang.title));
@@ -175,7 +231,7 @@
     if (location.hostname === 'laravel.com') {
         /* English */
         const lr_en = new LaravelLang('en');
-        lr_en.createBs4Dropdown('.docs nav.main .switcher');
+        lr_en.createLaravelSiteDropdown('.docs_actions');
 
     } else if (location.hostname === 'laravel.tw') {
         /* 繁體中文 */
