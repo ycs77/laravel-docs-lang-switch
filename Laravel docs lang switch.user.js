@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
-// @version      1.5
+// @version      1.6
 // @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -12,13 +12,13 @@
 // ==/UserScript==
 
 ;(function () {
-  'use strict';
+    'use strict';
 
     let d = document;
 
     function LaravelLang(lang) {
         this.url = window.location.href;
-        this.master_version = '6.0';
+        this.master_version = '6.x';
         this.langs = {
             en: {
                 title: 'English',
@@ -45,7 +45,7 @@
         this.prefix = this.langs[this.lang].prefix;
 
         // Version
-        const version = this.url.match(/(master|\d+\.\d+)/);
+        const version = this.url.match(/(master|\d+\.[\dx]+)/);
         if (version) {
             this.version = version[0];
         }
@@ -60,23 +60,26 @@
     LaravelLang.prototype.getLangs = function () {
         const self = this;
         let langs = [];
+
         for (const lang of Object.keys(this.langs)) {
-            let lang_data = self.langs[lang];
             let self_lang_data = self.langs[self.lang];
             let self_version = self.version;
+            let lang_data = self.langs[lang];
             let lang_version = lang_data.master_version;
             let min_version = lang_data.min_version;
+
             if (self_version === 'master') {
                 self_version = self_lang_data.master_version;
                 if (self_version === 'master') {
                     self_version = self.master_version;
                 }
             }
+
             if (lang_version === 'master') {
                 lang_version = self.master_version;
             }
-            if (
-                window.compareVersions(lang_version, self_version) >= 0 &&
+
+            if (window.compareVersions(lang_version, self_version) >= 0 &&
                 window.compareVersions(min_version, self_version) <= 0
             ) {
                 langs.push(lang_data);
@@ -87,7 +90,7 @@
 
     LaravelLang.prototype.parseUrl = function (lang) {
         let version = this.version;
-        if (version === 'master') {
+        if (version === 'master' || /(\d+\.x)/.test(version)) {
             version = lang.master_version;
         }
         return lang.prefix + version + (this.section ? '/' + this.section : '');
