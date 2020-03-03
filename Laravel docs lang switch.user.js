@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
-// @version      1.7
+// @version      1.8
 // @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -18,7 +18,7 @@
 
     function LaravelLang(lang) {
         this.url = window.location.href;
-        this.master_version = '6.x';
+        this.master_version = '7.x';
         this.langs = {
             en: {
                 title: 'English',
@@ -35,7 +35,7 @@
             zh_cn: {
                 title: '简体中文',
                 prefix: 'https://learnku.com/docs/laravel/',
-                master_version: '6.0',
+                master_version: '7.0',
                 min_version: '5.1'
             }
         };
