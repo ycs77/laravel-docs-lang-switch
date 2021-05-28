@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
-// @version      1.9
+// @version      2.0
 // @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -102,23 +102,25 @@
         const actions = d.querySelector(selector);
 
         const dropdown = d.createElement('div');
-        dropdown.classList.add('language_drop');
+        dropdown.classList.add('w-full', 'lg:w-64', 'lg:pl-12');
         actions.prepend(dropdown);
 
         const input_group = d.createElement('div');
-        input_group.classList.add('input_group');
         dropdown.appendChild(input_group);
 
         const label = d.createElement('label');
+        label.classList.add('text-gray-600', 'text-xs', 'tracking-widest', 'uppercase');
         label.appendChild(d.createTextNode('Language'));
         input_group.appendChild(label);
 
         const custom_select = d.createElement('div');
-        custom_select.classList.add('custom_select');
+        custom_select.classList.add('relative', 'w-full', 'bg-white', 'border-b', 'border-gray-600', 'border-opacity-50', 'transition-all', 'duration-500', 'focus-within:border-gray-600');
         input_group.appendChild(custom_select);
 
         const list = d.createElement('select');
-        list.id = 'language_switcher';
+        list.id = 'language-switcher';
+        list.ariaLabel = 'Laravel docs language';
+        list.classList.add('appearance-none', 'flex-1', 'w-full', 'px-0', 'py-1', 'placeholder-gray-900', 'tracking-wide', 'bg-white', 'focus:outline-none');
         this.getLangs().forEach(function (lang) {
             const option = d.createElement('option');
             option.value = self.parseUrl(lang);
@@ -133,23 +135,10 @@
         });
         custom_select.appendChild(list);
 
-        const css = d.createElement('style')
-        css.textContent = `
-.docs_actions .language_drop {
-    margin-bottom: 1em;
-}
-@media (min-width: 48.75em) {
-    .docs_actions .language_drop {
-        margin: 0;
-        margin-left: 2.25em;
-        flex: none;
-    }
-    .docs_actions .language_drop,
-    .docs_actions .version_drop {
-        width: 7em;
-    }
-}`
-        d.body.appendChild(css)
+        const arr_down = d.createElement('img');
+        arr_down.classList.add('absolute', 'inset-y-0', 'right-0', 'mt-2.5', 'w-2.5', 'h-2.5', 'text-gray-900', 'pointer-events-none');
+        arr_down.src = '/img/icons/drop_arrow.min.svg';
+        custom_select.appendChild(arr_down);
     }
 
     LaravelLang.prototype.createBs4Dropdown = function (selector) {
@@ -234,7 +223,7 @@
     if (location.hostname === 'laravel.com') {
         /* English */
         const lr_en = new LaravelLang('en');
-        lr_en.createLaravelSiteDropdown('.docs_actions');
+        lr_en.createLaravelSiteDropdown('#docsScreen > div > section > div > div');
 
     } else if (location.hostname === 'laravel.tw') {
         /* 繁體中文 */
