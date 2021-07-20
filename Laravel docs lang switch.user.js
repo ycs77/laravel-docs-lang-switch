@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
-// @version      2.0
+// @version      2.1
 // @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
@@ -96,31 +96,32 @@
         return lang.prefix + version + (this.section ? '/' + this.section : '');
     }
 
-    LaravelLang.prototype.createLaravelSiteDropdown = function (selector) {
+    LaravelLang.prototype.createLaravelSiteDropdown = function () {
         const self = this;
 
-        const actions = d.querySelector(selector);
+        const actions = d.querySelector('#docsScreen > div > section > div > div');
+        const firstChildInActions = actions.firstElementChild;
 
         const dropdown = d.createElement('div');
         dropdown.classList.add('w-full', 'lg:w-64', 'lg:pl-12');
-        actions.prepend(dropdown);
+        firstChildInActions.after(dropdown);
 
         const input_group = d.createElement('div');
         dropdown.appendChild(input_group);
 
         const label = d.createElement('label');
-        label.classList.add('text-gray-600', 'text-xs', 'tracking-widest', 'uppercase');
+        label.classList.add('text-gray-600', 'text-xs', 'tracking-widest', 'uppercase', 'dark:text-gray-500');
         label.appendChild(d.createTextNode('Language'));
         input_group.appendChild(label);
 
         const custom_select = d.createElement('div');
-        custom_select.classList.add('relative', 'w-full', 'bg-white', 'border-b', 'border-gray-600', 'border-opacity-50', 'transition-all', 'duration-500', 'focus-within:border-gray-600');
+        custom_select.classList.add('relative', 'w-full', 'bg-white', 'border-b', 'border-gray-600', 'border-opacity-50', 'transition-all', 'duration-500', 'focus-within:border-gray-600', 'dark:bg-gray-800');
         input_group.appendChild(custom_select);
 
         const list = d.createElement('select');
         list.id = 'language-switcher';
         list.ariaLabel = 'Laravel docs language';
-        list.classList.add('appearance-none', 'flex-1', 'w-full', 'px-0', 'py-1', 'placeholder-gray-900', 'tracking-wide', 'bg-white', 'focus:outline-none');
+        list.classList.add('appearance-none', 'flex-1', 'w-full', 'px-0', 'py-1', 'placeholder-gray-900', 'tracking-wide', 'bg-white', 'focus:outline-none', 'dark:bg-dark-800', 'dark:text-gray-400', 'dark:placeholder-gray-500');
         this.getLangs().forEach(function (lang) {
             const option = d.createElement('option');
             option.value = self.parseUrl(lang);
@@ -137,8 +138,15 @@
 
         const arr_down = d.createElement('img');
         arr_down.classList.add('absolute', 'inset-y-0', 'right-0', 'mt-2.5', 'w-2.5', 'h-2.5', 'text-gray-900', 'pointer-events-none');
+        arr_down.id = 'docs_search__version_arrow';
         arr_down.src = '/img/icons/drop_arrow.min.svg';
         custom_select.appendChild(arr_down);
+
+        const arr_down_dark = d.createElement('img');
+        arr_down_dark.classList.add('absolute', 'inset-y-0', 'right-0', 'mt-2.5', 'w-2.5', 'h-2.5', 'text-gray-900', 'pointer-events-none');
+        arr_down_dark.id = 'docs_search__version_arrow_dark';
+        arr_down_dark.src = '/img/icons/drop_arrow.dark.min.svg';
+        custom_select.appendChild(arr_down_dark);
     }
 
     LaravelLang.prototype.createBs4Dropdown = function (selector) {
@@ -223,7 +231,7 @@
     if (location.hostname === 'laravel.com') {
         /* English */
         const lr_en = new LaravelLang('en');
-        lr_en.createLaravelSiteDropdown('#docsScreen > div > section > div > div');
+        lr_en.createLaravelSiteDropdown();
 
     } else if (location.hostname === 'laravel.tw') {
         /* 繁體中文 */
