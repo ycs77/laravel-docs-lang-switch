@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         快速切換 Laravel 文檔語言
 // @namespace    https://github.com/ycs77
-// @version      2.1
+// @version      2.2
 // @description  安裝此外掛後，Laravel 文檔中將自動出現語言切換的按鈕，可以輕鬆切換英文和中文。
 // @author       Lucas Yang
 // @match        https://laravel.com/docs/*
 // @match        https://laravel.tw/docs/*
 // @match        https://learnku.com/*
+// @icon         https://laravel.com/img/favicon/favicon.ico
 // @require      https://unpkg.com/compare-versions@3.4.0/index.js
 // @license      MIT
 // ==/UserScript==
@@ -121,7 +122,7 @@
         const list = d.createElement('select');
         list.id = 'language-switcher';
         list.ariaLabel = 'Laravel docs language';
-        list.classList.add('appearance-none', 'flex-1', 'w-full', 'px-0', 'py-1', 'placeholder-gray-900', 'tracking-wide', 'bg-white', 'focus:outline-none', 'dark:bg-dark-800', 'dark:text-gray-400', 'dark:placeholder-gray-500');
+        list.classList.add(...d.getElementById('version-switcher').classList);
         this.getLangs().forEach(function (lang) {
             const option = d.createElement('option');
             option.value = self.parseUrl(lang);
