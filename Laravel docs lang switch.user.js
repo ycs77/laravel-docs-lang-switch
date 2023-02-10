@@ -19,7 +19,7 @@
 
     function LaravelLang(lang) {
         this.url = window.location.href;
-        this.master_version = '9.x';
+        this.master_version = '10.x';
         this.langs = {
             en: {
                 title: 'English',
@@ -36,7 +36,7 @@
             zh_cn: {
                 title: '简体中文',
                 prefix: 'https://learnku.com/docs/laravel/',
-                master_version: '9.0',
+                master_version: '10.0',
                 min_version: '5.1'
             }
         };
